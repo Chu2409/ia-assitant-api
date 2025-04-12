@@ -14,20 +14,20 @@ REST API developed by students from the Universidad Técnica de Ambato, integrat
 
 - Node.js 22
 - Docker
-- Pnpm
+- Bun
 
 ## Installation
 
 1. Install the application dependencies
 
 ```bash
-$ pnpm install
+$ bun install
 ```
 
-**Note**: If the `pnpm` command is not recognized, install it using the following command:
+**Note**: If the `bun` command is not recognized, install it using the following command:
 
 ```bash
-$ npm install -g pnpm
+$ npm install -g bun
 ```
 
 2. Create a `.env` file in the project root with the necessary environment variables. Below is an example of the required variables:
@@ -58,19 +58,19 @@ $ docker compose up
 This command will create the necessary tables in the database and populate it with test data.
 
 ```bash
-$ pnpm db:seed
+$ bun db:seed
 ```
 
 5. Start the application in different modes:
 
 ```bash
 # development
-$ pnpm start
+$ bun start
 
 # watch mode
-$ pnpm dev
+$ bun dev
 
 # production mode
-$ pnpm build
-$ pnpm start:prod
+$ bun run build
+$ bun start:prod
 ```

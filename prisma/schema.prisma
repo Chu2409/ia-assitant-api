@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model Organization {
+  id     Int    @id @default(autoincrement())
+  name   String @unique @map("name")
+  domain String @unique @map("domain")
+
+  users User[]
+
+  @@map("organizations")
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  email    String @unique @map("email")
+  password String @map("password")
+  name     String @map("name")
+  lastName String @map("last_name")
+
+  @@map("admins")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique @map("email")
+  password String @map("password")
+  name     String @map("name")
+  lastName String @map("last_name")
+
+  organizationId Int
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  title     String   @map("title")
+  startedAt DateTime @default(now()) @map("started_at")
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  messages Message[]
+
+  @@map("sessions")
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+model Message {
+  id        Int         @id @default(autoincrement())
+  content   String      @map("content")
+  metadata  String?     @map("metadata")
+  role      MessageRole @map("role")
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  sessionId Int
+  session   Session @relation(fields: [sessionId], references: [id])
+
+  @@map("messages")
+}

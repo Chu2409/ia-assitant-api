@@ -85,4 +85,13 @@ export class AuthService {
   private createToken = (payload: IJwtPayload) => {
     return this.jwtService.sign(payload)
   }
+
+  verifyToken = (token: string) => {
+    try {
+      return this.jwtService.verify(token)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new DisplayableException('Token inválido', HttpStatus.UNAUTHORIZED)
+    }
+  }
 }

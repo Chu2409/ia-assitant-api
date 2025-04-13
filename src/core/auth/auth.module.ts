@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 import { PassportModule } from '@nestjs/passport'
@@ -7,6 +7,7 @@ import { JwtStrategy } from './strategies/jwt.strategy'
 import { CustomConfigService } from 'src/global/config/config.service'
 import { CustomConfigModule } from 'src/global/config/config.module'
 
+@Global()
 @Module({
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
@@ -19,6 +20,7 @@ import { CustomConfigModule } from 'src/global/config/config.module'
         secret: configService.env.JWT_SECRET,
         signOptions: { expiresIn: '2h' },
       }),
+      global: true,
     }),
   ],
 })

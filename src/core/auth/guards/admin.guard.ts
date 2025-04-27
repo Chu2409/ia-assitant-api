@@ -17,7 +17,7 @@ export class AdminGuard implements CanActivate {
 
     if (!admin) throw new BadRequestException('Admin not found')
 
-    const isAdmin = await this.authService.isAdmin(String(admin.email))
+    const isAdmin = await this.authService.isAdmin(Number(admin.id))
 
     if (!isAdmin) throw new ForbiddenException('User is not an admin')
 

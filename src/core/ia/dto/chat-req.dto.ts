@@ -21,5 +21,5 @@ export class ChatReqDto {
 
   @IsString()
   @IsOptional()
-  model = 'google/gemini-2.5-pro-exp-03-25:free'
+  model?: string
 }

@@ -56,8 +56,11 @@ model Session {
 }
 
 enum MessageRole {
-  USER
-  ASSISTANT
+  user
+  assistant
+  developer
+  tool
+  system
 }
 
 model Message {

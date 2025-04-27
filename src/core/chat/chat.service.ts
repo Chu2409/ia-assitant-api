@@ -10,12 +10,17 @@ export class ChatService {
     private ai: OpenRouterService,
   ) {}
 
-  async handlePrompt(
-    userId: number,
-    prompt: string,
-    model: string,
-    sessionId?: number,
-  ) {
+  async handlePrompt({
+    userId,
+    prompt,
+    sessionId,
+    model = 'google/learnlm-1.5-pro-experimental:free',
+  }: {
+    userId: number
+    prompt: string
+    sessionId?: number
+    model?: string
+  }) {
     // 1. Obtener o crear sesión
     const session = sessionId
       ? await this.prisma.session.findUnique({ where: { id: sessionId } })
@@ -27,7 +32,7 @@ export class ChatService {
     await this.prisma.message.create({
       data: {
         sessionId: session!.id,
-        role: MessageRole.USER,
+        role: MessageRole.user,
         content: prompt,
       },
     })
@@ -45,13 +50,13 @@ export class ChatService {
       content: m.content,
     }))
 
-    const reply = await this.ai.chat({ prompt, context: formatted, model })
+    const reply = await this.ai.chat({ context: formatted, model })
 
     // 5. Guardar respuesta de la IA
     await this.prisma.message.create({
       data: {
         sessionId: session!.id,
-        role: MessageRole.ASSISTANT,
+        role: MessageRole.assistant,
         content: reply,
       },
     })

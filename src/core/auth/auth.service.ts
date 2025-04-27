@@ -33,39 +33,37 @@ export class AuthService {
 
       this.verifyPassword(password, admin.password)
 
-      return this.createToken({
-        id: admin.id,
-        email: admin.email,
-        isAdmin: true,
-      })
+      return {
+        token: this.createToken({ id: admin.id, isAdmin: true }),
+        user: admin,
+      }
     }
 
     this.verifyPassword(password, user.password)
 
-    return this.createToken({
-      id: user.id,
-      email: user.email,
-      isAdmin: false,
-    })
+    return {
+      token: this.createToken({ id: user.id, isAdmin: false }),
+      user,
+    }
   }
 
-  async isAdmin(email: string): Promise<boolean> {
+  async isAdmin(id: number): Promise<boolean> {
     const admin = await this.prismaService.admin.findUnique({
-      where: { email },
+      where: { id },
     })
     return !!admin
   }
 
   async validateUser(
-    email: string,
+    id: number,
     isAdmin: boolean,
   ): Promise<User | Admin | null> {
     if (isAdmin) {
-      return await this.prismaService.admin.findUnique({ where: { email } })
+      return await this.prismaService.admin.findUnique({ where: { id } })
     }
     return await this.prismaService.user.findUnique({
       where: {
-        email,
+        id,
       },
     })
   }

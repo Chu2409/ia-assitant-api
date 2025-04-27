@@ -8,19 +8,22 @@ import {
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
 import { Injectable, Logger } from '@nestjs/common'
-import { OpenRouterService } from '../ia/ia.service'
-import { WsAuth } from '../auth/decorators/auth.decorator'
+import { ChatService } from './chat.service'
 
 @WebSocketGateway({ cors: true })
 @Injectable()
-@WsAuth()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server
   private readonly logger = new Logger(ChatGateway.name)
 
-  constructor(private readonly openRouterService: OpenRouterService) {}
+  constructor(private readonly chatService: ChatService) {}
 
   handleConnection(client: Socket) {
+    const token = client.handshake.query.token
+    if (!token) {
+      client.emit('unathorized', { error: 'No token provided' })
+      client.disconnect() // Desconecta si no hay token
+    }
     this.logger.log(`Client connected: ${client.id}`)
   }
 
@@ -31,21 +34,32 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('chat_message')
   async handleMessage(
     client: Socket,
-    payload: { prompt: string; context: any[]; model: string },
+    payload: {
+      userId: number
+      prompt: string
+      sessionId?: number
+      model?: string
+    },
   ) {
-    const { prompt, context, model } = payload
+    const { userId, prompt, sessionId, model } = payload
 
     try {
-      const reply = await this.openRouterService.chat({
-        prompt,
-        context,
-        model,
+      const { reply, sessionId: newSessionId } =
+        await this.chatService.handlePrompt({
+          prompt,
+          userId,
+          sessionId,
+          model,
+        })
+
+      client.emit('chat_response', {
+        sessionId: newSessionId,
+        content: reply,
       })
 
-      // Emitir la respuesta al cliente
-      client.emit('chat_response', { content: reply })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      this.logger.error('Error in chat', error)
+      this.logger.error('Error in chat')
       client.emit('chat_error', { error: 'Error al procesar la solicitud' })
     }
   }

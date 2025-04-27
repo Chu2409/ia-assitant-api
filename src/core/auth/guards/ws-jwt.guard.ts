@@ -4,21 +4,25 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { Socket } from 'socket.io'
+import { AuthService } from '../auth.service'
+import { ChatGateway } from 'src/core/chat/chat.gateway'
 
 @Injectable()
 export class WsJwtGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly chatGateway: ChatGateway,
+  ) {}
 
   canActivate(context: ExecutionContext): boolean {
     const client: Socket = context.switchToWs().getClient()
-    const token = client.handshake.auth.token as string
+    const token = client.handshake.query.token
 
     if (!token) throw new UnauthorizedException('Token no proporcionado')
 
     try {
-      const payload = this.jwtService.verify(token)
+      const payload = this.authService.verifyToken(token as string)
       client.data.user = payload
 
       return true

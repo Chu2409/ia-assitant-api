@@ -29,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate(payload: IJwtPayload): Promise<User | Admin> {
     const userOrAdmin = await this.authService.validateUser(
-      payload.email,
+      payload.id,
       payload.isAdmin,
     )
 

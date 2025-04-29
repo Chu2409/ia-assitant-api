@@ -9,7 +9,8 @@ import { CustomConfigService } from './global/config/config.service'
 import { IaModule } from './core/ia/ia.module'
 import { ChatModule } from './core/chat/chat.module'
 import { HttpModule } from '@nestjs/axios'
-import { OrganizationsModule } from './core/organizations/organizations.module';
+import { OrganizationsModule } from './core/organizations/organizations.module'
+import { UsersModule } from './core/users/users.module'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { OrganizationsModule } from './core/organizations/organizations.module';
       }),
     }),
     OrganizationsModule,
+    UsersModule,
   ],
   providers: [AppService, ResponseInterceptor],
   controllers: [AppController],

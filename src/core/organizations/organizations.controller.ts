@@ -36,9 +36,9 @@ export class OrganizationsController {
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateInventoryDto: UpdateOrganizationDto,
+    @Body() dto: UpdateOrganizationDto,
   ) {
-    return this.service.update(id, updateInventoryDto)
+    return this.service.update(id, dto)
   }
 
   @Delete(':id')

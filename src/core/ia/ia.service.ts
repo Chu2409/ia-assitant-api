@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
-import { OpenRouterResponse } from './intefaces/open-router-response'
+import { OpenRouterResponse } from './types/open-router-response'
 import { lastValueFrom } from 'rxjs'
-import { ContextDto } from './dto/context.dto'
+import { IContext } from './types/open-router-request'
 
 @Injectable()
 export class OpenRouterService {
@@ -12,10 +12,10 @@ export class OpenRouterService {
     context,
     model = 'google/learnlm-1.5-pro-experimental:free',
   }: {
-    context: ContextDto[]
+    context: IContext[]
     model?: string
   }) {
-    const preContext: ContextDto[] = [
+    const preContext: IContext[] = [
       {
         role: 'system',
         content:

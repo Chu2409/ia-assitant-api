@@ -84,7 +84,6 @@ export class UsersService {
         take: limit,
         skip: (page - 1) * limit,
         where: whereClause,
-        include: this.include,
         orderBy: {
           id: 'desc',
         },

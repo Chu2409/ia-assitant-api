@@ -9,6 +9,7 @@ import { CustomConfigService } from './global/config/config.service'
 import { IaModule } from './core/ia/ia.module'
 import { ChatModule } from './core/chat/chat.module'
 import { HttpModule } from '@nestjs/axios'
+import { OrganizationsModule } from './core/organizations/organizations.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { HttpModule } from '@nestjs/axios'
         },
       }),
     }),
+    OrganizationsModule,
   ],
   providers: [AppService, ResponseInterceptor],
   controllers: [AppController],

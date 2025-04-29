@@ -11,6 +11,7 @@ import { ChatModule } from './core/chat/chat.module'
 import { HttpModule } from '@nestjs/axios'
 import { OrganizationsModule } from './core/organizations/organizations.module'
 import { UsersModule } from './core/users/users.module'
+import { SessionsModule } from './core/sessions/sessions.module'
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { UsersModule } from './core/users/users.module'
     }),
     OrganizationsModule,
     UsersModule,
+    SessionsModule,
   ],
   providers: [AppService, ResponseInterceptor],
   controllers: [AppController],

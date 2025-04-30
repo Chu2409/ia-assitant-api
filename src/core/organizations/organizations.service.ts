@@ -11,23 +11,23 @@ export class OrganizationsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   private whereClause = (search?: string): Prisma.OrganizationWhereInput => ({
-    OR: [
-      {
-        name: {
-          contains: search,
-          mode: 'insensitive',
+    ...(search && {
+      OR: [
+        {
+          name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          domain: {
+            contains: search,
+            mode: 'insensitive',
+          },
         },
-      },
-      {
-        domain: {
-          contains: search,
-          mode: 'insensitive',
-        },
-      },
-    ],
+      ],
+    }),
   })
 
-  include: Prisma.SelectSubset<
+  private include: Prisma.SelectSubset<
     Prisma.OrganizationInclude,
     Prisma.OrganizationInclude
   > = {
@@ -67,7 +67,6 @@ export class OrganizationsService {
         take: limit,
         skip: (page - 1) * limit,
         where: whereClause,
-        include: this.include,
         orderBy: {
           id: 'desc',
         },
@@ -110,13 +109,14 @@ export class OrganizationsService {
       data: {
         ...dto,
       },
-      include: this.include,
     })
 
     return inventory
   }
 
   async remove(id: number) {
+    await this.findOne(id)
+
     const exists = await this.prismaService.user.findFirst({
       where: {
         organizationId: id,
@@ -129,7 +129,7 @@ export class OrganizationsService {
         HttpStatus.BAD_REQUEST,
       )
 
-    return this.prismaService.organization.delete({
+    await this.prismaService.organization.delete({
       where: {
         id,
       },

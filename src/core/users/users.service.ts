@@ -12,35 +12,35 @@ export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
 
   private whereClause = (search?: string): Prisma.UserWhereInput => ({
-    OR: [
-      {
-        name: {
-          contains: search,
-          mode: 'insensitive',
+    ...(search && {
+      OR: [
+        {
+          name: {
+            contains: search,
+            mode: 'insensitive',
+          },
         },
-      },
-      {
-        lastName: {
-          contains: search,
-          mode: 'insensitive',
+        {
+          lastName: {
+            contains: search,
+            mode: 'insensitive',
+          },
         },
-      },
-      {
-        email: {
-          contains: search,
-          mode: 'insensitive',
+        {
+          email: {
+            contains: search,
+            mode: 'insensitive',
+          },
         },
-      },
-    ],
+      ],
+    }),
   })
 
-  include: Prisma.SelectSubset<Prisma.UserInclude, Prisma.UserInclude> = {
-    sessions: {
-      include: {
-        messages: true,
-      },
-    },
-  }
+  private include: Prisma.SelectSubset<Prisma.UserInclude, Prisma.UserInclude> =
+    {
+      sessions: true,
+      organization: true,
+    }
 
   async create({
     email,
@@ -69,6 +69,9 @@ export class UsersService {
         lastName,
         organizationId,
       },
+      omit: {
+        password: true,
+      },
     })
 
     return entity
@@ -86,6 +89,9 @@ export class UsersService {
         where: whereClause,
         orderBy: {
           id: 'desc',
+        },
+        omit: {
+          password: true,
         },
       }),
       this.prismaService.user.count({
@@ -108,6 +114,9 @@ export class UsersService {
         id,
       },
       include: this.include,
+      omit: {
+        password: true,
+      },
     })
 
     if (!entity) throw new NotFoundException(`User with id ${id} not found`)
@@ -126,13 +135,17 @@ export class UsersService {
         ...dto,
         password: dto.password ? hashPassword(dto.password) : undefined,
       },
-      include: this.include,
+      omit: {
+        password: true,
+      },
     })
 
     return inventory
   }
 
   async remove(id: number) {
+    await this.findOne(id)
+
     const exists = await this.prismaService.session.findFirst({
       where: {
         userId: id,
@@ -141,11 +154,11 @@ export class UsersService {
 
     if (exists)
       throw new DisplayableException(
-        'No se puede eliminar el usuario porque tiene sesiones activas',
+        'No se puede eliminar el usuario porque tiene chats asociados',
         HttpStatus.BAD_REQUEST,
       )
 
-    return this.prismaService.user.delete({
+    await this.prismaService.user.delete({
       where: {
         id,
       },

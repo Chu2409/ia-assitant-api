@@ -28,8 +28,8 @@ export class UsersController {
     return this.service.findAll(paginationDto)
   }
 
-  @Get()
-  findONe(@Param('id', ParseIntPipe) id: number) {
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.service.findOne(id)
   }
 

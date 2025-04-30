@@ -6,13 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
   ParseIntPipe,
 } from '@nestjs/common'
 import { SessionsService } from './sessions.service'
 import { CreateSessionDto } from './dto/create-session.dto'
 import { UpdateSessionDto } from './dto/update-session.dto'
-import { SessionFiltersDto } from './dto/filters.dto'
 
 @Controller('sessions')
 export class SessionsController {
@@ -23,13 +21,13 @@ export class SessionsController {
     return this.service.create(dto)
   }
 
-  @Get()
-  findAll(@Query() paginationDto: SessionFiltersDto) {
-    return this.service.findAll(paginationDto)
-  }
+  // @Get()
+  // findAll(@Query() paginationDto: SessionFiltersDto) {
+  //   return this.service.findAll(paginationDto)
+  // }
 
-  @Get()
-  findONe(@Param('id', ParseIntPipe) id: number) {
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.service.findOne(id)
   }
 

@@ -1,7 +1,6 @@
-import { Body, Controller, Get, HttpCode, Post, Request } from '@nestjs/common'
+import { Body, Controller, HttpCode, Post } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { SignInDto } from './dto/sign-in.dto'
-import { AdminAuth } from 'src/core/auth/decorators/auth.decorator'
 
 @Controller('auth')
 export class AuthController {
@@ -13,11 +12,11 @@ export class AuthController {
     return this.service.login(dto)
   }
 
-  @AdminAuth()
-  @Get('me')
-  getProfile(@Request() req) {
-    const user = req.user
+  // @AdminAuth()
+  // @Get('me')
+  // getProfile(@Request() req) {
+  //   const user = req.user
 
-    return user
-  }
+  //   return user
+  // }
 }

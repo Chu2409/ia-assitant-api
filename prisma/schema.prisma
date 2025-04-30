@@ -71,7 +71,7 @@ model Message {
   createdAt DateTime    @default(now()) @map("created_at")
 
   sessionId Int
-  session   Session @relation(fields: [sessionId], references: [id])
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@map("messages")
 }

@@ -7,7 +7,7 @@ export class CreateOrganizationDto {
 
   @IsString({ message: 'domain must be a string' })
   @IsNotEmpty({ message: 'domain must not be empty' })
-  @Length(10, 200, {
+  @Length(5, 200, {
     message: 'domain must be between 10 and 200 characters',
   })
   domain: string

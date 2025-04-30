@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client'
 import { organizations } from './data/organizations'
 import { users } from './data/user'
 import { admins } from './data/admins'
+import { sessions } from './data/sessions'
+import { messages } from './data/messages'
 
 const prisma = new PrismaClient()
 
@@ -17,6 +19,14 @@ const main = async () => {
 
   await prisma.admin.createMany({
     data: admins,
+  })
+
+  await prisma.session.createMany({
+    data: sessions,
+  })
+
+  await prisma.message.createMany({
+    data: messages,
   })
 
   Logger.log('Seed data created successfully')

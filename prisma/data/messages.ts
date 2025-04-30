@@ -18,7 +18,9 @@ export const messages: Prisma.MessageCreateManyInput[] = [
     sessionId: 1,
   },
   {
-    content: 'Dame de ejemplo de el código de un componente',
+    content:
+      '```jsx\nfunction Bienvenida(props) {\n  return <h1>Hola, {props.nombre}</h1>;\n}\n\nconst elemento = <Bienvenida nombre="Usuario" />;\n\n// Renderiza el componente en un elemento con el id \'root\'\nconst root = ReactDOM.createRoot(document.getElementById(\'root\')); \nroot.render(elemento);\n\n\n```\n\n**Explicación:**\n\n* **`function Bienvenida(props)`:** Define una función llamada `Bienvenida`. Esta función representa nuestro componente. Recibe un objeto `props` (propiedades) como argumento. Las `props` son una forma de pasar datos a un componente.\n\n* **`return <h1>Hola, {props.nombre}</h1>;`:**  Esta línea describe lo que el componente renderizará en la pantalla. En este caso, un encabezado `<h1>` que muestra el texto "Hola," seguido del valor de `props.nombre`.  Las llaves `{}` se utilizan para insertar expresiones de JavaScript dentro del HTML (JSX).\n\n\n* **`const elemento = <Bienvenida nombre="Usuario" />;`:**  Crea un elemento React. Es como una instancia de nuestro componente `Bienvenida`, donde le pasamos  `"Usuario"` como valor para la propiedad `nombre`.\n\n\n* **`const root = ReactDOM.createRoot(document.getElementById(\'root\'));`**: Obtiene una referencia al elemento HTML con el id \'root\'. Este elemento sirve como contenedor para nuestra aplicación React.  Asegúrate de tener un elemento `<div id="root"></div>` en tu archivo HTML.\n\n\n* **`root.render(elemento);`:** Renderiza el elemento  (nuestro componente `Bienvenida`) dentro del contenedor `root`.  Esto hará que aparezca  "Hola, Usuario" en la página web.\n\n\nPara que este código funcione, necesitas incluir las bibliotecas de React y ReactDOM en tu archivo HTML\n\n\nEste es un ejemplo básico, pero ilustra la estructura fundamental de un componente en React: una función que acepta propiedades y devuelve lo que se mostrará en la pantalla.  Los componentes pueden ser mucho más complejos, incluyendo lógica, eventos y otros componentes anidados.\n',
+
     role: 'assistant',
     sessionId: 1,
   },

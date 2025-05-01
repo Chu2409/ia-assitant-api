@@ -34,4 +34,31 @@ export class OpenRouterService {
 
     return response.data.choices[0].message.content
   }
+
+  async getTitle({
+    context,
+    model = 'google/learnlm-1.5-pro-experimental:free',
+  }: {
+    context: IContext[]
+    model?: string
+  }) {
+    const preContext: IContext[] = [
+      {
+        role: 'system',
+        content:
+          'Eres un asistente IA especializado en el área tecnológica. Tu objetivo va a ser generar un título para una conversación de chat. Debes proporcionar un título claro y conciso, evitando tecnicismos innecesarios y respondiendo solo con el título.',
+      },
+    ]
+
+    const finalContext = [...preContext, ...context]
+
+    const response = await lastValueFrom(
+      this.httpService.post<OpenRouterResponse>('', {
+        model,
+        messages: finalContext,
+      }),
+    )
+
+    return response.data.choices[0].message.content
+  }
 }

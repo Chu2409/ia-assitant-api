@@ -97,4 +97,4 @@ bun dev
 
 ## Architecture Diagram 🏗️
 
-![Architecture Diagram](./public/architecture.jpeg)
+![Architecture Diagram](./static/architecture.jpeg)

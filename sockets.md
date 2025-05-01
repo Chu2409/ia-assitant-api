@@ -38,7 +38,7 @@ const socket = new WebSocket('ws://localhost:8080?token=JWT_TOKEN')
 }
 ```
 
-- Posibles mensajes de error:
+- Possible error messages:
   - "Token not provided" (MISSING_TOKEN)
   - "Token is invalid" (INVALID_TOKEN)
   - "Authentication error" (other errors)
@@ -136,13 +136,13 @@ class ChatWebSocket {
   }
 
   setupEventListeners() {
-    this.socket.onopen = () => console.log('Conexión establecida')
+    this.socket.onopen = () => console.log('Connection established')
 
     this.socket.onmessage = (event) => {
       const response = JSON.parse(event.data)
 
       if (response.event === 'chat_response') {
-        console.log('Respuesta:', response.data.content)
+        console.log('Response:', response.data.content)
       } else if (response.event === 'chat_error') {
         console.error('Error:', response.message.content)
       } else if (response.event === 'unauthorized') {
@@ -152,7 +152,7 @@ class ChatWebSocket {
     }
 
     this.socket.onclose = (event) => {
-      console.log(`Conexión cerrada: ${event.reason}`)
+      console.log(`Connection closed: ${event.reason}`)
       if (!event.wasClean) {
         this.reconnect()
       }
@@ -168,7 +168,7 @@ class ChatWebSocket {
         }),
       )
     } else {
-      console.error('WebSocket no está conectado')
+      console.error('WebSocket is not open.')
     }
   }
 
@@ -178,7 +178,7 @@ class ChatWebSocket {
 }
 
 // Uso
-const chat = new ChatWebSocket('ws://localhost:3010', 'tu_jwt_token')
+const chat = new ChatWebSocket('ws://localhost:3010', 'JWT_TOKEN')
 chat.sendMessage({
   userId: 1,
   prompt: 'Hola, ¿cómo estás?',

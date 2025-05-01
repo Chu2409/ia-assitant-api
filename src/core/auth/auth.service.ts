@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common'
-import { SignInDto } from './dto/sign-in.dto'
+import { SignInDto } from './dto/req/sign-in.dto'
 import { JwtService } from '@nestjs/jwt'
 import { IJwtPayload } from './types/jwt-payload.interface'
 import { DisplayableException } from 'src/common/exceptions/displayable.exception'
@@ -33,17 +33,25 @@ export class AuthService {
 
       this.verifyPassword(password, admin.password)
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password: pass, ...adminWithoutPassword } = admin
+
       return {
         token: this.createToken({ id: admin.id, isAdmin: true }),
-        user: admin,
+        user: adminWithoutPassword,
+        isAdmin: true,
       }
     }
 
     this.verifyPassword(password, user.password)
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: pass, organizationId, ...userWithoutPassword } = user
+
     return {
       token: this.createToken({ id: user.id, isAdmin: false }),
-      user,
+      user: userWithoutPassword,
+      isAdmin: false,
     }
   }
 

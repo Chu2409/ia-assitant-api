@@ -9,7 +9,7 @@ import {
 import { Request, Response } from 'express'
 // import { Prisma } from '@prisma/client'
 import { DisplayableException } from '../exceptions/displayable.exception'
-import { IApiRes } from '../types/api-response.interface'
+import { ApiRes } from '../types/api-response.interface'
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -19,7 +19,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>()
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR
-    const errorResponse: IApiRes<null> = {
+    const errorResponse: ApiRes<null> = {
       success: false,
       message: {
         content: ['Ocurrió un error inesperado'],

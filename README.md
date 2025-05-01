@@ -1,76 +1,100 @@
-## Description
+# IA-ASSISTANT API 🏦🎯
 
-REST API developed by students from the Universidad Técnica de Ambato, integrated with artificial intelligence to provide enhanced support for students in the technology field.
+RESTful API for management and control
 
-## Technologies
+## Key Features ✨
 
-- Nest.js
-- TypeScript
-- PostgreSQL
-- Drizzle
-- Docker
+- 🔐 JWT Authentication with Passport
+- 📈 Complete CRUD for:
+  - Users
+- 📧 Notification system:
+  - Scheduled reminders (Cron Jobs)
+  - Progress alerts
+- 🛠️ Development tools:
+  - Pre-commits with Husky
+  - Auto-formatting (Prettier)
+  - Linting (ESLint)
 
-## Requisitos
+## Technologies 🛠️
 
-- Node.js 22
-- Docker
-- Bun
+| Category       | Technologies               |
+| -------------- | -------------------------- |
+| Backend        | NestJS, Node.js 22.15, Bun |
+| Database       | PostgreSQL 17, Drizzle ORM |
+| Authentication | Passport-JWT               |
+| DevOps         | Docker, Git                |
+| Code Quality   | Husky, Prettier, ESLint    |
+| Testing        | Postman                    |
 
-## Installation
-
-1. Install the application dependencies
-
-```bash
-$ bun install
-```
-
-**Note**: If the `bun` command is not recognized, install it using the following command:
-
-```bash
-$ npm install -g bun
-```
-
-2. Create a `.env` file in the project root with the necessary environment variables. Below is an example of the required variables:
+## Project Structure 📂
 
 ```bash
-# Docker Configuration
-POSTGRES_USER="admin"
-POSTGRES_PASSWORD="admin"
-POSTGRES_DB="sales-force"
-DB_PORT="5432"
-
-# API Configuration
-PORT="3000"
-DATABASE_URL="postgresql://admin:admin@localhost:5432/sales-force?schema=public"
-JWT_SECRET="Est3EsMISE3Dsecreto32s"
+src/
+├── auth/    # JWT Authentication
+├── mail/    # Notification system
+├── cron/    # Scheduled tasks
+├── common/  # Shared utilities
+└── prisma/  # DB schema & migrations
 ```
 
-3. Use the following command to start the database in a Docker container:
+## Requirements 📋
+
+- Node.js 22.15+
+- Bun (optional for development)
+- PostgreSQL 17
+- Docker (for containerized development)
+
+## Setup ⚙️
+
+1. Clone repository:
 
 ```bash
-$ docker compose up
+git clone [repo-url]
+cd ia-assistant-api
 ```
 
-**Note**: Ensure Docker is installed on your system.
-
-4. Run the database migrations and seeds with the following command:
-
-This command will create the necessary tables in the database and populate it with test data.
+2. Install dependencies:
 
 ```bash
-$ bun db:seed
+bun install
 ```
 
-5. Start the application in different modes:
+3. Configure environment variables (create .env file based on the example):
 
 ```bash
-# development
-$ bun start
+PORT=3010
 
-# watch mode
-$ bun dev
+DB_PORT=5450
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=ia-assistant-db
 
-# production mode
-$ bun run build
-$ bun start:prod
+DB_URL=postgresql://postgres:postgres@localhost:5450/ia-assistant-db
+
+JWT_SECRET=top_secret
+
+IA_API_KEY=
+IA_API_URL=https://openrouter.ai/api/v1/chat/completions
 ```
+
+4. Start database with Docker:
+
+```bash
+docker compose up -d
+```
+
+5. Run migrations and initial seed:
+
+```bash
+bun db:seed
+```
+
+6. Start development server:
+
+```bash
+bun dev
+```
+
+## Architecture Diagram 🏗️
+
+![Architecture Diagram](./public/architecture.jpeg)

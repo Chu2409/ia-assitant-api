@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { PrismaService } from 'src/global/prisma/prisma.service'
-import { CreateSessionDto } from './dto/create-session.dto'
-import { UpdateSessionDto } from './dto/update-session.dto'
+import { CreateSessionDto } from './dto/req/create-session.dto'
+import { UpdateSessionDto } from './dto/req/update-session.dto'
 
 @Injectable()
 export class SessionsService {
@@ -25,7 +25,11 @@ export class SessionsService {
     Prisma.SessionInclude,
     Prisma.SessionInclude
   > = {
-    messages: true,
+    messages: {
+      omit: {
+        sessionId: true,
+      },
+    },
   }
 
   async create({ title, userId }: CreateSessionDto) {
@@ -83,7 +87,7 @@ export class SessionsService {
   async update(id: number, dto: UpdateSessionDto) {
     await this.findOne(id)
 
-    const inventory = await this.prismaService.session.update({
+    const entity = await this.prismaService.session.update({
       where: {
         id,
       },
@@ -92,7 +96,7 @@ export class SessionsService {
       },
     })
 
-    return inventory
+    return entity
   }
 
   async remove(id: number) {

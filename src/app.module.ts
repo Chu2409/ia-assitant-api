@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { AuthModule } from './core/auth/auth.module'
 import { CustomConfigModule } from './global/config/config.module'
 import { PrismaModule } from './global/prisma/prisma.module'
@@ -35,7 +33,6 @@ import { SessionsModule } from './core/sessions/sessions.module'
     UsersModule,
     SessionsModule,
   ],
-  providers: [AppService, ResponseInterceptor],
-  controllers: [AppController],
+  providers: [ResponseInterceptor],
 })
 export class AppModule {}

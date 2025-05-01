@@ -1,6 +1,9 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { SignInDto } from './dto/sign-in.dto'
+import { SignInDto } from './dto/req/sign-in.dto'
+import { ApiOperation } from '@nestjs/swagger'
+import { ApiStandardResponse } from 'src/common/decorators/api-standard-response.decorator'
+import { SignInResDto } from './dto/res/sign-in-res.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -8,6 +11,10 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
+  @ApiOperation({
+    summary: 'Login',
+  })
+  @ApiStandardResponse(SignInResDto, HttpStatus.OK)
   async login(@Body() dto: SignInDto) {
     return this.service.login(dto)
   }

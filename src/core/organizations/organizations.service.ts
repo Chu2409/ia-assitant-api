@@ -1,9 +1,9 @@
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
-import { CreateOrganizationDto } from './dto/create-organization.dto'
-import { UpdateOrganizationDto } from './dto/update-organization.dto'
+import { CreateOrganizationDto } from './dto/req/create-organization.dto'
+import { UpdateOrganizationDto } from './dto/req/update-organization.dto'
 import { PrismaService } from 'src/global/prisma/prisma.service'
 import { DisplayableException } from 'src/common/exceptions/displayable.exception'
-import { OrganizationFiltersDto } from './dto/filters.dto'
+import { OrganizationFiltersDto } from './dto/req/filters.dto'
 import { Prisma } from '@prisma/client'
 
 @Injectable()
@@ -31,7 +31,12 @@ export class OrganizationsService {
     Prisma.OrganizationInclude,
     Prisma.OrganizationInclude
   > = {
-    users: true,
+    users: {
+      omit: {
+        password: true,
+        organizationId: true,
+      },
+    },
   }
 
   async create({ domain, name }: CreateOrganizationDto) {
@@ -102,7 +107,24 @@ export class OrganizationsService {
   async update(id: number, dto: UpdateOrganizationDto) {
     await this.findOne(id)
 
-    const inventory = await this.prismaService.organization.update({
+    const alreadyExists = await this.prismaService.organization.findFirst({
+      where: {
+        OR: [{ name: dto.name }, { domain: dto.domain }],
+        AND: {
+          id: {
+            not: id,
+          },
+        },
+      },
+    })
+
+    if (alreadyExists)
+      throw new DisplayableException(
+        'Ya existe una organización con ese nombre o dominio',
+        HttpStatus.BAD_REQUEST,
+      )
+
+    const entity = await this.prismaService.organization.update({
       where: {
         id,
       },
@@ -111,7 +133,7 @@ export class OrganizationsService {
       },
     })
 
-    return inventory
+    return entity
   }
 
   async remove(id: number) {

@@ -1,11 +1,11 @@
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
-import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
+import { CreateUserDto } from './dto/req/create-user.dto'
+import { UpdateUserDto } from './dto/req/update-user.dto'
 import { PrismaService } from 'src/global/prisma/prisma.service'
 import { Prisma } from '@prisma/client'
 import { DisplayableException } from 'src/common/exceptions/displayable.exception'
 import { hashPassword } from 'src/common/utils/encrypter'
-import { UserFiltersDto } from './dto/filters.dto'
+import { UserFiltersDto } from './dto/req/filters.dto'
 
 @Injectable()
 export class UsersService {
@@ -71,6 +71,7 @@ export class UsersService {
       },
       omit: {
         password: true,
+        organizationId: true,
       },
     })
 
@@ -92,6 +93,7 @@ export class UsersService {
         },
         omit: {
           password: true,
+          organizationId: true,
         },
       }),
       this.prismaService.user.count({
@@ -116,6 +118,7 @@ export class UsersService {
       include: this.include,
       omit: {
         password: true,
+        organizationId: true,
       },
     })
 
@@ -127,7 +130,22 @@ export class UsersService {
   async update(id: number, dto: UpdateUserDto) {
     await this.findOne(id)
 
-    const inventory = await this.prismaService.user.update({
+    const alreadyExists = await this.prismaService.user.findFirst({
+      where: {
+        email: dto.email,
+        id: {
+          not: id,
+        },
+      },
+    })
+
+    if (alreadyExists)
+      throw new DisplayableException(
+        'Ya existe un usuario con ese email',
+        HttpStatus.BAD_REQUEST,
+      )
+
+    const entity = await this.prismaService.user.update({
       where: {
         id,
       },
@@ -137,10 +155,11 @@ export class UsersService {
       },
       omit: {
         password: true,
+        organizationId: true,
       },
     })
 
-    return inventory
+    return entity
   }
 
   async remove(id: number) {

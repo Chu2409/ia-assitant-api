@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { UserRole } from '@prisma/client'
 import { SimpleUserResDto } from 'src/core/users/dto/res/simple-user-res.dto'
 
 export class SignInResDto {
@@ -16,8 +17,9 @@ export class SignInResDto {
   user: SimpleUserResDto
 
   @ApiProperty({
-    description: 'Indicates if the user is an admin',
-    example: true,
+    enum: UserRole,
+    description: 'User role',
+    example: UserRole.USER,
   })
-  isAdmin: boolean
+  role: UserRole
 }

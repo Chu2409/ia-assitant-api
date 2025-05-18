@@ -87,14 +87,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('chat_message')
   async handleMessage(
     client: Socket,
-    { userId, prompt, sessionId: currentSessionId, model }: MessagePayloadDto,
+    { userId, prompt, sessionId: currentSessionId }: MessagePayloadDto,
   ) {
     try {
       const { content, sessionId } = await this.chatService.handlePrompt({
         prompt,
         userId,
         sessionId: currentSessionId,
-        model,
       })
 
       const res: ApiRes<MesssageResDto> = {

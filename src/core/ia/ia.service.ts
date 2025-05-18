@@ -8,13 +8,9 @@ import { IContext } from './types/open-router-request'
 export class OpenRouterService {
   constructor(private readonly httpService: HttpService) {}
 
-  async chat({
-    context,
-    model = 'google/learnlm-1.5-pro-experimental:free',
-  }: {
-    context: IContext[]
-    model?: string
-  }) {
+  private readonly model = 'meta-llama/llama-3.3-8b-instruct:free'
+
+  async chat({ context }: { context: IContext[] }) {
     const preContext: IContext[] = [
       {
         role: 'system',
@@ -27,7 +23,7 @@ export class OpenRouterService {
 
     const response = await lastValueFrom(
       this.httpService.post<OpenRouterResponse>('', {
-        model,
+        model: this.model,
         messages: finalContext,
       }),
     )
@@ -35,13 +31,7 @@ export class OpenRouterService {
     return response.data.choices[0].message.content
   }
 
-  async getTitle({
-    context,
-    model = 'google/learnlm-1.5-pro-experimental:free',
-  }: {
-    context: IContext[]
-    model?: string
-  }) {
+  async getTitle({ context }: { context: IContext[] }) {
     const preContext: IContext[] = [
       {
         role: 'system',
@@ -54,7 +44,7 @@ export class OpenRouterService {
 
     const response = await lastValueFrom(
       this.httpService.post<OpenRouterResponse>('', {
-        model,
+        model: this.model,
         messages: finalContext,
       }),
     )

@@ -14,7 +14,6 @@ import { CreateSessionDto } from './dto/req/create-session.dto'
 import { UpdateSessionDto } from './dto/req/update-session.dto'
 import { ApiOperation } from '@nestjs/swagger'
 import { ApiStandardResponse } from 'src/common/decorators/api-standard-response.decorator'
-import { SingleSessionResDto } from './dto/res/simple-session-res.dto'
 import { SessionMessagesResDto } from './dto/res/session-messages-res.dto'
 
 @Controller('sessions')
@@ -25,7 +24,7 @@ export class SessionsController {
   @ApiOperation({
     summary: 'Create a new session',
   })
-  @ApiStandardResponse(SingleSessionResDto, HttpStatus.CREATED)
+  @ApiStandardResponse(Boolean, HttpStatus.CREATED)
   create(@Body() dto: CreateSessionDto) {
     return this.service.create(dto)
   }
@@ -48,7 +47,7 @@ export class SessionsController {
   @ApiOperation({
     summary: 'Update a session by ID',
   })
-  @ApiStandardResponse(SingleSessionResDto)
+  @ApiStandardResponse(Boolean)
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateSessionDto) {
     return this.service.update(id, dto)
   }
@@ -57,7 +56,7 @@ export class SessionsController {
   @ApiOperation({
     summary: 'Delete a session by ID',
   })
-  @ApiStandardResponse()
+  @ApiStandardResponse(Boolean)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id)
   }

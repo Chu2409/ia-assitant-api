@@ -1,8 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { UserRole } from '@prisma/client'
 import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   Length,
@@ -44,11 +46,19 @@ export class CreateUserDto {
   @Length(2, 50, { message: 'lastName must be between 2 and 50 characters' })
   lastName: string
 
-  @ApiProperty({
+  @ApiPropertyOptional({
+    description: 'User role',
+    example: UserRole.USER,
+    enum: UserRole,
+  })
+  role?: UserRole
+
+  @ApiPropertyOptional({
     description: 'Organization ID',
     example: 1,
   })
   @IsNumber({}, { message: 'organizationId must be a number' })
   @IsPositive({ message: 'organizationId must be a positive number' })
-  organizationId: number
+  @IsOptional()
+  organizationId?: number
 }

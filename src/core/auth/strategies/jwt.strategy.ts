@@ -2,16 +2,16 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { IJwtPayload } from '../types/jwt-payload.interface'
-import { Admin, User } from '@prisma/client'
+import { User } from '@prisma/client'
 import { Request } from 'express'
-import { AuthService } from '../auth.service'
 import { CustomConfigService } from 'src/global/config/config.service'
+import { PrismaService } from 'src/global/prisma/prisma.service'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
-    private readonly authService: AuthService,
     private readonly configService: CustomConfigService,
+    private readonly prismaService: PrismaService,
   ) {
     super({
       secretOrKey: configService.env.JWT_SECRET,
@@ -27,14 +27,13 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super.authenticate(req, options)
   }
 
-  async validate(payload: IJwtPayload): Promise<User | Admin> {
-    const userOrAdmin = await this.authService.validateUser(
-      payload.id,
-      payload.isAdmin,
-    )
+  async validate({ id }: IJwtPayload): Promise<User> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id },
+    })
 
-    if (!userOrAdmin) throw new UnauthorizedException('Token not valid')
+    if (!user) throw new UnauthorizedException('Token not valid')
 
-    return userOrAdmin
+    return user
   }
 }

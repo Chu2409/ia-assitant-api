@@ -55,7 +55,6 @@ const socket = new WebSocket('ws://localhost:8080?token=JWT_TOKEN')
   userId: number;    // User ID
   prompt: string;    // Message to send
   sessionId?: number;// Session ID (optional)
-  model?: string;    // Model to use (optional)
 }
 
 ```

@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma, UserRole } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 
 const encryptPassword = (password: string) => {
@@ -19,5 +19,12 @@ export const users: Prisma.UserCreateManyInput[] = [
     email: 'jdoe@test2.org',
     password: encryptPassword('123456'),
     organizationId: 2,
+  },
+  {
+    name: 'Daniel',
+    lastName: 'Zhu',
+    email: 'dzhu2409@test.org',
+    password: encryptPassword('123456'),
+    role: UserRole.ADMIN,
   },
 ]

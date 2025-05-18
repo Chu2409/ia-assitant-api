@@ -2,7 +2,6 @@ import { Logger } from '@nestjs/common'
 import { PrismaClient } from '@prisma/client'
 import { organizations } from './data/organizations'
 import { users } from './data/user'
-import { admins } from './data/admins'
 import { sessions } from './data/sessions'
 import { messages } from './data/messages'
 
@@ -15,10 +14,6 @@ const main = async () => {
 
   await prisma.user.createMany({
     data: users,
-  })
-
-  await prisma.admin.createMany({
-    data: admins,
   })
 
   await prisma.session.createMany({

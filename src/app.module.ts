@@ -10,6 +10,7 @@ import { HttpModule } from '@nestjs/axios'
 import { OrganizationsModule } from './core/organizations/organizations.module'
 import { UsersModule } from './core/users/users.module'
 import { SessionsModule } from './core/sessions/sessions.module'
+import { TagsModule } from './core/tags/tags.module'
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SessionsModule } from './core/sessions/sessions.module'
     OrganizationsModule,
     UsersModule,
     SessionsModule,
+    TagsModule,
   ],
   providers: [ResponseInterceptor],
 })

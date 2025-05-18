@@ -30,7 +30,7 @@ export class OrganizationsController {
   @ApiOperation({
     summary: 'Create a new organization',
   })
-  @ApiStandardResponse(SingleOrganizationResDto, HttpStatus.CREATED)
+  @ApiStandardResponse(Boolean, HttpStatus.CREATED)
   create(@Body() dto: CreateOrganizationDto) {
     return this.service.create(dto)
   }
@@ -57,7 +57,7 @@ export class OrganizationsController {
   @ApiOperation({
     summary: 'Update an organization by ID',
   })
-  @ApiStandardResponse(SingleOrganizationResDto)
+  @ApiStandardResponse(Boolean)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateOrganizationDto,
@@ -69,7 +69,7 @@ export class OrganizationsController {
   @ApiOperation({
     summary: 'Delete an organization by ID',
   })
-  @ApiStandardResponse()
+  @ApiStandardResponse(Boolean)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id)
   }

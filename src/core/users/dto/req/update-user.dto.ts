@@ -9,6 +9,7 @@ import {
   IsNumber,
   IsPositive,
 } from 'class-validator'
+import { UserRole } from '@prisma/client'
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiPropertyOptional({
@@ -45,6 +46,13 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString({ message: 'lastName must be a string' })
   @Length(2, 50, { message: 'lastName must be between 2 and 50 characters' })
   lastName?: string
+
+  @ApiPropertyOptional({
+    description: 'User role',
+    example: UserRole.USER,
+    enum: UserRole,
+  })
+  role?: UserRole
 
   @ApiPropertyOptional({
     description: 'Organization ID',

@@ -75,7 +75,7 @@ export class UsersService {
       },
     })
 
-    return entity
+    return !!entity
   }
 
   async findAll({ limit, page, search }: UserFiltersDto) {
@@ -159,7 +159,7 @@ export class UsersService {
       },
     })
 
-    return entity
+    return !!entity
   }
 
   async remove(id: number) {
@@ -177,10 +177,12 @@ export class UsersService {
         HttpStatus.BAD_REQUEST,
       )
 
-    await this.prismaService.user.delete({
+    const deleted = await this.prismaService.user.delete({
       where: {
         id,
       },
     })
+
+    return !!deleted
   }
 }

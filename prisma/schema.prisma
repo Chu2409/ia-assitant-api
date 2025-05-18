@@ -17,27 +17,26 @@ model Organization {
   @@map("organizations")
 }
 
-model Admin {
-  id       Int    @id @default(autoincrement())
-  email    String @unique @map("email")
-  password String @map("password")
-  name     String @map("name")
-  lastName String @map("last_name")
-
-  @@map("admins")
+enum UserRole {
+  USER
+  ADMIN
+  SUPER
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique @map("email")
-  password String @map("password")
-  name     String @map("name")
-  lastName String @map("last_name")
+  id       Int      @id @default(autoincrement())
+  email    String   @unique @map("email")
+  password String   @map("password")
+  name     String   @map("name")
+  lastName String   @map("last_name")
+  role     UserRole @default(USER) @map("role")
 
-  organizationId Int
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
 
   sessions Session[]
+  notes    Note[]
+  tags     Tag[]
 
   @@map("users")
 }
@@ -74,4 +73,44 @@ model Message {
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@map("messages")
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  title     String
+  content   String // Contenido HTML
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  tags NoteTag[]
+
+  @@map("notes")
+}
+
+model Tag {
+  id     Int     @id @default(autoincrement())
+  name   String
+  color  String? // Código hexadecimal de color (#RRGGBB)
+  userId Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  notes NoteTag[]
+
+  @@unique([name, userId]) // Nombre de etiqueta único por usuario
+  @@map("tags")
+}
+
+// Tabla de unión para relación muchos-a-muchos
+model NoteTag {
+  noteId String
+  note   Note   @relation(fields: [noteId], references: [id])
+  tagId  Int
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([noteId, tagId])
+  @@map("note_tags")
 }

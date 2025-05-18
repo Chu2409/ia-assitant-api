@@ -40,7 +40,7 @@ export class SessionsService {
       },
     })
 
-    return entity
+    return !!entity
   }
 
   // async findAll({ limit, page, search }: SessionFiltersDto) {
@@ -96,16 +96,18 @@ export class SessionsService {
       },
     })
 
-    return entity
+    return !!entity
   }
 
   async remove(id: number) {
     await this.findOne(id)
 
-    await this.prismaService.session.delete({
+    const deleted = await this.prismaService.session.delete({
       where: {
         id,
       },
     })
+
+    return !!deleted
   }
 }

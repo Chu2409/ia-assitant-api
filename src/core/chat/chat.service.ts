@@ -4,6 +4,8 @@ import { OpenRouterService } from '../ia/ia.service'
 import { MessageRole } from '@prisma/client'
 import { MessagePayloadDto } from './dto/req/message-payload.dto'
 import { MesssageResDto } from './dto/res/message-res.dto'
+import { IContext } from '../ia/types/open-router-request'
+import { SimplePromptReqDto } from './dto/req/simple-prompt.dto'
 
 @Injectable()
 export class ChatService {
@@ -16,7 +18,6 @@ export class ChatService {
     userId,
     prompt,
     sessionId,
-    model = 'google/learnlm-1.5-pro-experimental:free',
   }: MessagePayloadDto): Promise<MesssageResDto> {
     // 1. Obtener o crear sesión
     const session = sessionId
@@ -47,12 +48,11 @@ export class ChatService {
       content: m.content,
     }))
 
-    const reply = await this.ai.chat({ context: formatted, model })
+    const reply = await this.ai.chat({ context: formatted })
 
     if (!sessionId) {
       const title = await this.ai.getTitle({
         context: formatted,
-        model,
       })
 
       await this.prisma.session.update({
@@ -71,5 +71,20 @@ export class ChatService {
     })
 
     return { sessionId: session!.id, content: reply }
+  }
+
+  async handleSimplePrompt({ prompt }: SimplePromptReqDto) {
+    const formatted: IContext[] = [
+      {
+        content: prompt,
+        role: MessageRole.user,
+      },
+    ]
+
+    const reply = await this.ai.chat({ context: formatted })
+
+    return {
+      reply,
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { UserRole } from '@prisma/client'
 import { SingleOrganizationResDto } from 'src/core/organizations/dto/res/single-organization-res.dto'
 import { SingleSessionResDto } from 'src/core/sessions/dto/res/simple-session-res.dto'
 
@@ -26,6 +27,13 @@ export class UserMessagesOrganizationResDto {
     example: 'Doe',
   })
   lastName: string
+
+  @ApiProperty({
+    description: 'User role',
+    example: UserRole.USER,
+    enum: UserRole,
+  })
+  role: UserRole
 
   @ApiProperty({
     description: 'User chats',

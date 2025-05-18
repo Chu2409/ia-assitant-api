@@ -1,16 +1,18 @@
 import { applyDecorators, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
-import { AdminGuard } from '../guards/admin.guard'
 import { WsJwtGuard } from '../guards/ws-jwt.guard'
+import { RoleProtected } from './role-protected.decorator'
+import { UserRole } from '@prisma/client'
+import { AuthGuard } from '@nestjs/passport'
 
-export function Auth() {
-  return applyDecorators(UseGuards(JwtAuthGuard))
+export function Auth(...roles: UserRole[]) {
+  return applyDecorators(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    RoleProtected(...roles),
+    UseGuards(AuthGuard(), JwtAuthGuard),
+  )
 }
 
 export function WsAuth() {
   return applyDecorators(UseGuards(WsJwtGuard))
-}
-
-export function AdminAuth() {
-  return applyDecorators(UseGuards(JwtAuthGuard, AdminGuard))
 }

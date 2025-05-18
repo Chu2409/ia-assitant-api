@@ -30,7 +30,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Create user',
   })
-  @ApiStandardResponse(SimpleUserResDto, HttpStatus.OK)
+  @ApiStandardResponse(Boolean, HttpStatus.OK)
   create(@Body() dto: CreateUserDto) {
     return this.service.create(dto)
   }
@@ -57,7 +57,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Update user',
   })
-  @ApiStandardResponse(SimpleUserResDto, HttpStatus.OK)
+  @ApiStandardResponse(Boolean, HttpStatus.OK)
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserDto) {
     return this.service.update(id, dto)
   }
@@ -66,7 +66,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Delete user',
   })
-  @ApiStandardResponse()
+  @ApiStandardResponse(Boolean, HttpStatus.OK)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id)
   }

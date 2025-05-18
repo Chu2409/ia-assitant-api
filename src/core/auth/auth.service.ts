@@ -5,7 +5,6 @@ import { IJwtPayload } from './types/jwt-payload.interface'
 import { DisplayableException } from 'src/common/exceptions/displayable.exception'
 import { comparePassword } from 'src/common/utils/encrypter'
 import { PrismaService } from 'src/global/prisma/prisma.service'
-import { Admin, User } from '@prisma/client'
 
 @Injectable()
 export class AuthService {
@@ -19,29 +18,11 @@ export class AuthService {
       where: { email },
     })
 
-    if (!user) {
-      const admin = await this.prismaService.admin.findUnique({
-        where: { email },
-      })
-
-      if (!admin) {
-        throw new DisplayableException(
-          'Usuario no encontrado',
-          HttpStatus.NOT_FOUND,
-        )
-      }
-
-      this.verifyPassword(password, admin.password)
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password: pass, ...adminWithoutPassword } = admin
-
-      return {
-        token: this.createToken({ id: admin.id, isAdmin: true }),
-        user: adminWithoutPassword,
-        isAdmin: true,
-      }
-    }
+    if (!user)
+      throw new DisplayableException(
+        'Credenciales incorrectas',
+        HttpStatus.NOT_FOUND,
+      )
 
     this.verifyPassword(password, user.password)
 
@@ -49,31 +30,10 @@ export class AuthService {
     const { password: pass, organizationId, ...userWithoutPassword } = user
 
     return {
-      token: this.createToken({ id: user.id, isAdmin: false }),
+      token: this.createToken({ id: user.id, role: user.role }),
       user: userWithoutPassword,
-      isAdmin: false,
+      role: user.role,
     }
-  }
-
-  async isAdmin(id: number): Promise<boolean> {
-    const admin = await this.prismaService.admin.findUnique({
-      where: { id },
-    })
-    return !!admin
-  }
-
-  async validateUser(
-    id: number,
-    isAdmin: boolean,
-  ): Promise<User | Admin | null> {
-    if (isAdmin) {
-      return await this.prismaService.admin.findUnique({ where: { id } })
-    }
-    return await this.prismaService.user.findUnique({
-      where: {
-        id,
-      },
-    })
   }
 
   private verifyPassword(password: string, userPassword: string) {

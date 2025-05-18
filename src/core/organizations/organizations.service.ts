@@ -59,7 +59,7 @@ export class OrganizationsService {
       },
     })
 
-    return entity
+    return !!entity
   }
 
   async findAll({ limit, page, search }: OrganizationFiltersDto) {
@@ -133,7 +133,7 @@ export class OrganizationsService {
       },
     })
 
-    return entity
+    return !!entity
   }
 
   async remove(id: number) {
@@ -151,10 +151,12 @@ export class OrganizationsService {
         HttpStatus.BAD_REQUEST,
       )
 
-    await this.prismaService.organization.delete({
+    const deleted = await this.prismaService.organization.delete({
       where: {
         id,
       },
     })
+
+    return !!deleted
   }
 }

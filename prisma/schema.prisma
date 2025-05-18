@@ -76,7 +76,7 @@ model Message {
 }
 
 model Note {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   title     String
   content   String // Contenido HTML
   createdAt DateTime @default(now())
@@ -85,7 +85,7 @@ model Note {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
-  tags NoteTag[]
+  tags NoteTag[] @relation("NoteToTags")
 
   @@map("notes")
 }
@@ -98,7 +98,7 @@ model Tag {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  notes NoteTag[]
+  notes NoteTag[] @relation("NoteToTags")
 
   @@unique([name, userId]) // Nombre de etiqueta único por usuario
   @@map("tags")
@@ -106,10 +106,10 @@ model Tag {
 
 // Tabla de unión para relación muchos-a-muchos
 model NoteTag {
-  noteId String
-  note   Note   @relation(fields: [noteId], references: [id])
-  tagId  Int
-  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  noteId Int  @map("note_id")
+  note   Note @relation(fields: [noteId], references: [id], name: "NoteToTags", onDelete: Cascade) // Mismo nombre aquí
+  tagId  Int  @map("tag_id")
+  tag    Tag  @relation(fields: [tagId], references: [id], name: "NoteToTags") // Y aquí
 
   @@id([noteId, tagId])
   @@map("note_tags")

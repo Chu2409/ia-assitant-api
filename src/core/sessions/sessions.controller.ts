@@ -1,16 +1,13 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
   Delete,
   ParseIntPipe,
-  HttpStatus,
 } from '@nestjs/common'
 import { SessionsService } from './sessions.service'
-import { CreateSessionDto } from './dto/req/create-session.dto'
 import { UpdateSessionDto } from './dto/req/update-session.dto'
 import { ApiOperation } from '@nestjs/swagger'
 import { ApiStandardResponse } from 'src/common/decorators/api-standard-response.decorator'
@@ -20,14 +17,14 @@ import { SessionMessagesResDto } from './dto/res/session-messages-res.dto'
 export class SessionsController {
   constructor(private readonly service: SessionsService) {}
 
-  @Post()
-  @ApiOperation({
-    summary: 'Create a new session',
-  })
-  @ApiStandardResponse(Boolean, HttpStatus.CREATED)
-  create(@Body() dto: CreateSessionDto) {
-    return this.service.create(dto)
-  }
+  // @Post()
+  // @ApiOperation({
+  //   summary: 'Create a new session',
+  // })
+  // @ApiStandardResponse(Boolean, HttpStatus.CREATED)
+  // create(@Body() dto: CreateSessionDto) {
+  //   return this.service.create(dto)
+  // }
 
   // @Get()
   // findAll(@Query() paginationDto: SessionFiltersDto) {

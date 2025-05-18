@@ -11,6 +11,7 @@ import { OrganizationsModule } from './core/organizations/organizations.module'
 import { UsersModule } from './core/users/users.module'
 import { SessionsModule } from './core/sessions/sessions.module'
 import { TagsModule } from './core/tags/tags.module'
+import { NotesModule } from './core/notes/notes.module'
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TagsModule } from './core/tags/tags.module'
     UsersModule,
     SessionsModule,
     TagsModule,
+    NotesModule,
   ],
   providers: [ResponseInterceptor],
 })

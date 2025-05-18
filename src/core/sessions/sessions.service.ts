@@ -32,7 +32,7 @@ export class SessionsService {
     },
   }
 
-  async create({ title, userId }: CreateSessionDto) {
+  async create(userId: number, { title }: CreateSessionDto) {
     const entity = await this.prismaService.session.create({
       data: {
         title,

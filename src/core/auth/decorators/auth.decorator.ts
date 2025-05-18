@@ -7,7 +7,6 @@ import { AuthGuard } from '@nestjs/passport'
 
 export function Auth(...roles: UserRole[]) {
   return applyDecorators(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     RoleProtected(...roles),
     UseGuards(AuthGuard(), JwtAuthGuard),
   )

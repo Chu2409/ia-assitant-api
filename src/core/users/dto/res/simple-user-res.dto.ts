@@ -21,15 +21,15 @@ export class SimpleUserResDto {
   name: string
 
   @ApiProperty({
+    description: 'User last name',
+    example: 'Doe',
+  })
+  lastName: string
+
+  @ApiProperty({
     description: 'User role',
     example: UserRole.USER,
     enum: UserRole,
   })
   role: UserRole
-
-  @ApiProperty({
-    description: 'User last name',
-    example: 'Doe',
-  })
-  lastName: string
 }

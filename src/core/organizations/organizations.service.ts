@@ -14,11 +14,13 @@ export class OrganizationsService {
     ...(search && {
       OR: [
         {
-          name: {
+          domain: {
             contains: search,
             mode: 'insensitive',
           },
-          domain: {
+        },
+        {
+          name: {
             contains: search,
             mode: 'insensitive',
           },

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class TagResDto {
   @ApiProperty({
@@ -13,7 +13,7 @@ export class TagResDto {
   })
   name: string
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'The color of the tag',
     example: '#ff0000',
   })

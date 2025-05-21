@@ -15,14 +15,14 @@ export class SingleMessageResDto {
   content: string
 
   @ApiProperty({
-    example: 1,
-    description: 'Session ID',
+    example: 'Test',
+    description: 'Session metadata',
   })
   metadata: string | null
 
   @ApiProperty({
-    example: 1,
-    description: 'User ID',
+    example: MessageRole.user,
+    description: 'Message role',
     enum: MessageRole,
   })
   role: MessageRole

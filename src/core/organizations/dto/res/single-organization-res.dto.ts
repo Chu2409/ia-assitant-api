@@ -15,7 +15,7 @@ export class SingleOrganizationResDto {
 
   @ApiProperty({
     description: 'The description of the organization',
-    example: 'This is my organization',
+    example: 'test@domain.com',
   })
   domain: string
 }

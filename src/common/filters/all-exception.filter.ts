@@ -9,7 +9,7 @@ import {
 import { Request, Response } from 'express'
 // import { Prisma } from '@prisma/client'
 import { DisplayableException } from '../exceptions/displayable.exception'
-import { ApiRes } from '../types/api-response.interface'
+import { ApiRes } from '../dtos/res/api-response'
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {

@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types'
 import { CreateOrganizationDto } from './create-organization.dto'
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator'
+import { IsOptional, IsString, Length } from 'class-validator'
 
 export class UpdateOrganizationDto extends PartialType(CreateOrganizationDto) {
   @ApiPropertyOptional({
@@ -19,7 +19,6 @@ export class UpdateOrganizationDto extends PartialType(CreateOrganizationDto) {
   })
   @IsOptional()
   @IsString({ message: 'domain must be a string' })
-  @IsNotEmpty({ message: 'domain must not be empty' })
   @Length(5, 200, {
     message: 'domain must be between 10 and 200 characters',
   })

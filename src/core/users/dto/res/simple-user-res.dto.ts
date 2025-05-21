@@ -27,9 +27,22 @@ export class SimpleUserResDto {
   lastName: string
 
   @ApiProperty({
+    description: 'User active status',
+    example: true,
+    default: true,
+  })
+  isActive: boolean
+
+  @ApiProperty({
     description: 'User role',
     example: UserRole.USER,
     enum: UserRole,
   })
   role: UserRole
+
+  @ApiProperty({
+    description: 'User created at date',
+    example: new Date(),
+  })
+  createdAt: Date
 }

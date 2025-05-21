@@ -1,5 +1,5 @@
 import { ExecutionContext, SetMetadata } from '@nestjs/common'
-import { ApiMessage as IApiMessage } from '../types/api-response.interface'
+import { ApiMessage as IApiMessage } from '../dtos/res/api-response'
 import { Reflector } from '@nestjs/core'
 
 export const API_MESSAGE_METADATA = 'apiMessage'

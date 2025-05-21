@@ -9,7 +9,7 @@ import {
 import { Server, Socket } from 'socket.io'
 import { Injectable, Logger } from '@nestjs/common'
 import { ChatService } from './chat.service'
-import { ApiRes } from 'src/common/types/api-response.interface'
+import { ApiRes } from 'src/common/dtos/res/api-response'
 import { MessagePayloadDto } from './dto/req/message-payload.dto'
 import { MesssageResDto } from './dto/res/message-res.dto'
 import { JwtService } from '@nestjs/jwt'

@@ -5,7 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common'
 import { map, Observable } from 'rxjs'
-import { ApiRes } from '../types/api-response.interface'
+import { ApiRes } from '../dtos/res/api-response'
 import { Reflector } from '@nestjs/core'
 import { getApiMessage } from '../decorators/api-message.decorator'
 

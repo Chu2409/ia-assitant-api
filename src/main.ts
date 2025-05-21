@@ -6,8 +6,8 @@ import { GlobalExceptionFilter } from './common/filters/all-exception.filter'
 import { useContainer } from 'class-validator'
 import { CustomConfigService } from './global/config/config.service'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { ApiPaginatedRes, ApiRes } from './common/types/api-response.interface'
-import { BaseParamsDto } from './common/dtos/base-params.dto'
+import { ApiPaginatedRes, ApiRes } from './common/dtos/res/api-response'
+import { BaseParamsDto } from './common/dtos/req/base-params.dto'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true })

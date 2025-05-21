@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsOptional, IsString } from 'class-validator'
-import { BaseParamsDto } from 'src/common/dtos/base-params.dto'
+import { BaseParamsDto } from 'src/common/dtos/req/base-params.dto'
 
 export class UserFiltersDto extends BaseParamsDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Search by name or email',
     required: false,
     type: String,

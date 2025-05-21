@@ -101,6 +101,8 @@ export class NotesService {
   }
 
   async update(id: number, updateNoteDto: UpdateNoteDto) {
+    await this.findOne(id)
+
     return this.prismaService.$transaction(async (prisma) => {
       // Actualiza la nota
       const note = await prisma.note.update({

@@ -49,7 +49,7 @@ export class NotesController {
   @ApiOperation({
     summary: 'Get a note by ID',
   })
-  @ApiStandardResponse(NoteResDto, HttpStatus.OK)
+  @ApiStandardResponse([NoteResDto], HttpStatus.OK)
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.notesService.findOne(id)
   }

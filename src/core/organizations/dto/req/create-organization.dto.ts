@@ -7,6 +7,7 @@ export class CreateOrganizationDto {
     example: 'My Organization',
   })
   @IsString({ message: 'name must be a string' })
+  @IsNotEmpty({ message: 'name must not be empty' })
   @Length(3, 50, { message: 'name must be between 3 and 50 characters' })
   name: string
 

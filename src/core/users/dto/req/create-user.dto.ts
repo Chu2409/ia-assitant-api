@@ -1,7 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import {
+  IsBoolean,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -46,11 +48,22 @@ export class CreateUserDto {
   @Length(2, 50, { message: 'lastName must be between 2 and 50 characters' })
   lastName: string
 
+  @IsBoolean()
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: 'User active status',
+    example: true,
+    default: true,
+  })
+  isActive?: boolean
+
   @ApiPropertyOptional({
     description: 'User role',
     example: UserRole.USER,
     enum: UserRole,
   })
+  @IsOptional()
+  @IsEnum(UserRole)
   role?: UserRole
 
   @ApiPropertyOptional({

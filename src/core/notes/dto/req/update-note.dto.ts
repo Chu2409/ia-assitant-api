@@ -13,7 +13,7 @@ export class UpdateNoteDto extends PartialType(CreateNoteReqDto) {
     description: 'Title of the note',
     example: 'My first note',
   })
-  @IsString()
+  @IsString({ message: 'title must be a string' })
   @Length(1, 100)
   @IsOptional()
   title?: string
@@ -22,7 +22,7 @@ export class UpdateNoteDto extends PartialType(CreateNoteReqDto) {
     description: 'Content of the note',
     example: 'This is the content of my first note.',
   })
-  @IsString()
+  @IsString({ message: 'content must be a string' })
   @IsOptional()
   content?: string
 

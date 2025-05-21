@@ -1,4 +1,4 @@
-import { Controller, Post, HttpStatus, Body } from '@nestjs/common'
+import { Controller, Post, HttpStatus, Body, HttpCode } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
 import { ApiStandardResponse } from 'src/common/decorators/api-standard-response.decorator'
 import { ChatService } from './chat.service'
@@ -17,6 +17,7 @@ export class ChatsController {
     summary: 'Ask a simple question to the AI',
   })
   @ApiStandardResponse(SimpleMessageResDto, HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   simplePrompt(@Body() dto: SimplePromptReqDto) {
     return this.service.handleSimplePrompt(dto)
   }

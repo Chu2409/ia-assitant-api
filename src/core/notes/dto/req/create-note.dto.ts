@@ -1,12 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsNumber, IsString, Length } from 'class-validator'
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Length,
+} from 'class-validator'
 
 export class CreateNoteReqDto {
   @ApiProperty({
     description: 'Title of the note',
     example: 'My first note',
   })
-  @IsString()
+  @IsString({ message: 'title must be a string' })
+  @IsNotEmpty({ message: 'title is required' })
   @Length(1, 100)
   title: string
 

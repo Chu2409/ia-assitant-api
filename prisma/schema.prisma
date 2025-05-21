@@ -24,12 +24,14 @@ enum UserRole {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique @map("email")
-  password String   @map("password")
-  name     String   @map("name")
-  lastName String   @map("last_name")
-  role     UserRole @default(USER) @map("role")
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @map("email")
+  password  String   @map("password")
+  name      String   @map("name")
+  lastName  String   @map("last_name")
+  isActive  Boolean  @default(true) @map("is_active")
+  role      UserRole @default(USER) @map("role")
+  createdAt DateTime @default(now()) @map("created_at")
 
   organizationId Int?
   organization   Organization? @relation(fields: [organizationId], references: [id])
@@ -109,7 +111,7 @@ model NoteTag {
   noteId Int  @map("note_id")
   note   Note @relation(fields: [noteId], references: [id], name: "NoteToTags", onDelete: Cascade) // Mismo nombre aquí
   tagId  Int  @map("tag_id")
-  tag    Tag  @relation(fields: [tagId], references: [id], name: "NoteToTags") // Y aquí
+  tag    Tag  @relation(fields: [tagId], references: [id], name: "NoteToTags", onDelete: Cascade) // Y aquí
 
   @@id([noteId, tagId])
   @@map("note_tags")

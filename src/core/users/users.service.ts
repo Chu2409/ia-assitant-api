@@ -165,18 +165,6 @@ export class UsersService {
   async remove(id: number) {
     await this.findOne(id)
 
-    const exists = await this.prismaService.session.findFirst({
-      where: {
-        userId: id,
-      },
-    })
-
-    if (exists)
-      throw new DisplayableException(
-        'No se puede eliminar el usuario porque tiene chats asociados',
-        HttpStatus.BAD_REQUEST,
-      )
-
     const deleted = await this.prismaService.user.delete({
       where: {
         id,

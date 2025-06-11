@@ -14,17 +14,31 @@ import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/req/create-user.dto'
 import { UpdateUserDto } from './dto/req/update-user.dto'
 import { UserFiltersDto } from './dto/req/filters.dto'
-import { ApiOperation } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
 import {
   ApiPaginatedResponse,
   ApiStandardResponse,
 } from 'src/common/decorators/api-standard-response.decorator'
 import { SimpleUserResDto } from './dto/res/simple-user-res.dto'
 import { UserMessagesOrganizationResDto } from './dto/res/user-messages-organization-res.dto'
+import { GetUser } from '../auth/decorators/get-user.decorator'
+import { User } from '@prisma/client'
+import { Auth } from '../auth/decorators/auth.decorator'
 
 @Controller('users')
+@Auth()
+@ApiBearerAuth()
 export class UsersController {
   constructor(private readonly service: UsersService) {}
+
+  @Get('me')
+  @ApiOperation({
+    summary: 'Get user by token',
+  })
+  @ApiStandardResponse(UserMessagesOrganizationResDto, HttpStatus.OK)
+  findMe(@GetUser() user: User) {
+    return this.service.findOne(user.id)
+  }
 
   @Post()
   @ApiOperation({

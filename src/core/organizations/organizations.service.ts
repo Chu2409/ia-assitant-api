@@ -109,22 +109,24 @@ export class OrganizationsService {
   async update(id: number, dto: UpdateOrganizationDto) {
     await this.findOne(id)
 
-    const alreadyExists = await this.prismaService.organization.findFirst({
-      where: {
-        OR: [{ name: dto.name }, { domain: dto.domain }],
-        AND: {
-          id: {
-            not: id,
+    if (dto.name || dto.domain) {
+      const alreadyExists = await this.prismaService.organization.findFirst({
+        where: {
+          OR: [{ name: dto.name }, { domain: dto.domain }],
+          AND: {
+            id: {
+              not: id,
+            },
           },
         },
-      },
-    })
+      })
 
-    if (alreadyExists)
-      throw new DisplayableException(
-        'Ya existe una organización con ese nombre o dominio',
-        HttpStatus.BAD_REQUEST,
-      )
+      if (alreadyExists)
+        throw new DisplayableException(
+          'Ya existe una organización con ese nombre o dominio',
+          HttpStatus.BAD_REQUEST,
+        )
+    }
 
     const entity = await this.prismaService.organization.update({
       where: {

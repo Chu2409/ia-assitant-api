@@ -130,20 +130,22 @@ export class UsersService {
   async update(id: number, dto: UpdateUserDto) {
     await this.findOne(id)
 
-    const alreadyExists = await this.prismaService.user.findFirst({
-      where: {
-        email: dto.email,
-        id: {
-          not: id,
+    if (dto.email) {
+      const alreadyExists = await this.prismaService.user.findFirst({
+        where: {
+          email: dto.email,
+          id: {
+            not: id,
+          },
         },
-      },
-    })
+      })
 
-    if (alreadyExists)
-      throw new DisplayableException(
-        'Ya existe un usuario con ese email',
-        HttpStatus.BAD_REQUEST,
-      )
+      if (alreadyExists)
+        throw new DisplayableException(
+          'Ya existe un usuario con ese email',
+          HttpStatus.BAD_REQUEST,
+        )
+    }
 
     const entity = await this.prismaService.user.update({
       where: {

@@ -8,7 +8,7 @@ import { IContext } from './types/open-router-request'
 export class OpenRouterService {
   constructor(private readonly httpService: HttpService) {}
 
-  private readonly model = 'meta-llama/llama-3.3-8b-instruct:free'
+  private readonly model = 'mistralai/mistral-7b-instruct:free'
 
   async chat({ context }: { context: IContext[] }) {
     const preContext: IContext[] = [

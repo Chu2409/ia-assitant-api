@@ -78,9 +78,13 @@ export class UsersService {
     return !!entity
   }
 
-  async findAll({ limit, page, search }: UserFiltersDto) {
+  async findAll({ limit, page, search, organizationId }: UserFiltersDto) {
     const whereClause: Prisma.UserWhereInput = {
       ...this.whereClause(search),
+    }
+
+    if (organizationId) {
+      whereClause.organizationId = organizationId
     }
 
     const [entities, total] = await Promise.all([

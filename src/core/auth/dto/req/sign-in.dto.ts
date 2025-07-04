@@ -14,6 +14,6 @@ export class SignInDto {
     example: '123456',
   })
   @IsString({ message: 'password must be a string' })
-  @Length(6, 20, { message: 'password must be between 4 and 20 characters' })
+  @Length(6, 50, { message: 'password must be between 6 and 50 characters' })
   password: string
 }
